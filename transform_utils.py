@@ -46,6 +46,19 @@ def rot_from_rpy(rpy: np.ndarray) -> np.ndarray:
 
     return R 
 
+def rpy_from_rot(R: np.ndarray) -> np.ndarray:
+    '''
+    Yaw-Pitch-Roll order 
+    ZYX 
+    R_z @ R_y @ R_x
+    '''
+    rpy = np.zeros(3)
+    rpy[0] = np.arctan2(R[1, 0], R[0, 0]) # yaw 
+    rpy[1] = np.arctan2(-R[2, 0], np.sqrt(R[2, 1]**2 + R[2, 2]**2)) # pitch 
+    rpy[2] = np.arctan2(R[2, 1], R[2, 2]) # roll 
+
+    return rpy
+
 def axisangle_from_rot(R): 
     '''
     Reference: https://en.wikipedia.org/wiki/Axis–angle_representation

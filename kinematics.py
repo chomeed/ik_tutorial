@@ -40,6 +40,9 @@ class Frame:
         T_local[:3, :3] = R 
 
         return self.joint.T_offset @ T_local 
+    
+    def __str__(self): 
+        return f"Joint: {self.joint.axis} {self.joint.T_offset}"
 
 
 class KinematicChain: 
@@ -158,8 +161,8 @@ class KinematicChain:
             J = self.calc_jacobian(curr_fk)
 
             dtheta = 0.5 * np.linalg.pinv(J) @ err_pos 
-            print("current thetas", current_thetas)
-            print("dtheta", dtheta)
+            # print("current thetas", current_thetas)
+            # print("dtheta", dtheta)
             current_thetas += dtheta 
 
             curr_fk = self.forward_kinematics(current_thetas)
@@ -174,7 +177,14 @@ class KinematicChain:
         print(f"Total iteration: {iterator-1}")
         print(f"Error: {err}")
 
-        return current_thetas  
+        info = {
+            "error": err,
+            "iterations": iterator-1,
+            "target_pos": target_pos,
+            "current_pos": current_pos
+            }
+
+        return current_thetas, info 
 
 
 if __name__ == "__main__": 
@@ -225,7 +235,7 @@ if __name__ == "__main__":
     assert np.all(current_xyz == (0, 2, 0)), f"FK is wrong, the current xyz is {current_xyz}"
 
     target_pos = np.array([1, 1, 0]) # ignore the rotation part 
-    new_thetas = robot2DoF.compute_ik_newton_rapshon(current_thetas, target_pos)
+    new_thetas, _ = robot2DoF.compute_ik_newton_rapshon(current_thetas, target_pos)
     print("New thetas", new_thetas)
 
     new_fk = robot2DoF.forward_kinematics(new_thetas)
