@@ -1,5 +1,10 @@
 This repo is made to demonstrate Jacobian Pseudoinverse-based IK solver on MuJoCo environment. Additionally, it applies joint limit for the 3D robots.
 
+### Demo 
+[2D](videos/2d_ik_demo.mov) \
+[3D](videos/3d_ik_demo.mov) \
+[Z1](videos/z1_ik_demo.mov)
+
 ### Dependency
 
     mujoco
