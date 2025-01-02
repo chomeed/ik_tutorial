@@ -19,25 +19,30 @@
         <geom type="capsule" density="0.1" class="sub" size="0.1 1" pos="1 0 0" euler="0 90 0"/>
         <joint name="j1" type="hinge" axis="0 0 1" frictionloss="0.5"/>
         <body pos="2 0 0">
-          <geom type="sphere" density="0.1" class="main" size="0.1 1"/>
-          <joint name="eef" type="hinge" axis="0 0 1" frictionloss="0.5"/>
+          <geom type="capsule" density="0.1" class="main" size="0.1 1" pos="1 0 0" euler="0 90 0"/>
+          <joint name="j2" type="hinge" axis="0 0 1" frictionloss="0.5"/>
+          <body pos="2 0 0">
+            <geom type="sphere" density="0.1" class="sub" size="0.1 1"/>
+            <joint name="eef" type="hinge" axis="0 0 1" frictionloss="0.5"/>
+          </body>
         </body>
       </body>
     </body>
 
     <!-- For Tracking EEF  -->
-    <body name="target" pos="4 0 0">
+    <body name="target" pos="6 0 0">
       <geom type="sphere" size="0.1" rgba="1 0 0 1" contype="0" conaffinity="0"/>  <!-- Red sphere -->
       <joint name="slide_x" type="slide" axis="1 0 0"/>  <!-- x-direction -->
       <joint name="slide_y" type="slide" axis="0 1 0"/>  <!-- y-direction -->
     </body>
 
-    <camera mode="fixed" pos="0 0 10" euler="0 0 0"/>
+    <camera mode="fixed" pos="0 0 14" euler="0 0 0"/>
 
   </worldbody>
 
   <actuator>
     <motor joint="j0" ctrllimited="true" ctrlrange="-1 1" />
     <motor joint="j1" ctrllimited="true" ctrlrange="-1 1" />
+    <motor joint="j2" ctrllimited="true" ctrlrange="-1 1" />
   </actuator>
 </mujoco>

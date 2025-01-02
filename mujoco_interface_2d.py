@@ -1,7 +1,7 @@
 import mujoco as mj
 from mujoco.glfw import glfw
 import numpy as np 
-from kinematics import * 
+from kinematics_2d import * 
 from transform_utils import *
 
 
@@ -24,7 +24,7 @@ class RobotController:
         robot_body_id = mj.mj_name2id(self.model, mj.mjtObj.mjOBJ_BODY, "robot")
         jnt_start = self.model.body_jntadr[robot_body_id]
         # dof = self.model.body_jntnum[robot_body_id]
-        dof = 2 # NOTE: hardcoded for now
+        dof = 3 # NOTE: hardcoded for now
         print("robot_body_id", robot_body_id)
         print("dof", dof)
 
@@ -50,15 +50,15 @@ class RobotController:
             rpy = rpy_from_rot(rpy)
 
             # Compute position and orientation w.r.t the parent body 
-            xyz = xyz - xyz_parent
+            xyz_relative = xyz - xyz_parent
             # rpy = rpy_parent.T @ rpy # when using rotation matrix representation
-            rpy = rpy - rpy_parent
+            rpy_relative = rpy - rpy_parent
 
             print(f"  Joint: {joint_name} (ID: {jnt_id}, Type: {joint_type}, Axis: {axis})")
-            print(f"    XYZ: {xyz}")
-            print(f"    RPY: {rpy}")
+            print(f"    XYZ(relative): {xyz_relative}")
+            print(f"    RPY(relative): {rpy_relative}")
             print(f"Joint body ID: {self.model.jnt_bodyid[jnt_id]}")
-            joints.append(Joint(axis, xyz, rpy))
+            joints.append(Joint(axis, xyz_relative, rpy_relative))
 
             xyz_parent = xyz 
             rpy_parent = rpy
@@ -68,14 +68,14 @@ class RobotController:
         for frame in self.chain.frames: 
             print(frame)
         print("Initial EEF pose", self.chain.forward_kinematics(self.current_thetas)[-1][:3, 3])
-
+        print("FK", self.chain.forward_kinematics(self.current_thetas))
 
     @property
     def current_thetas(self): 
         '''
         return data.qpos
         '''
-        return self.data.qpos[:3]
+        return self.data.qpos[:4]
     
     def get_desired_thetas(self):
         '''
@@ -92,7 +92,7 @@ class RobotController:
         '''
         set data.qpos = thetas
         '''
-        self.data.qpos[:3] = thetas 
+        self.data.qpos[:4] = thetas 
 
     def move_target(self, delta_pos):
         '''
@@ -213,7 +213,8 @@ class Interface:
 
 
 if __name__ == "__main__":
-    robot = Interface("test.xml")
+    # robot = Interface("mjcf/2d_rr_robot.xml")
+    robot = Interface("mjcf/2d_rrr_robot.xml")
     robot.simulate()
 
     # Create a kinematic chain 

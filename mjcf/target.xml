@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<mujoco> 
+    <worldbody>
+        <body name="target" pos="0.0382 0 0.1605">
+            <geom type="sphere" size="0.01" rgba="1 0 0 1" contype="0" conaffinity="0"/>
+            <joint name="slide_x" type="slide" axis="1 0 0"/>  
+            <joint name="slide_y" type="slide" axis="0 1 0"/>  
+            <joint name="slide_z" type="slide" axis="0 0 1"/>  
+
+            <joint name="hinge_x" type="hinge" axis="1 0 0" frictionloss="0.5"/>
+            <joint name="hinge_y" type="hinge" axis="0 1 0" frictionloss="0.5"/>
+            <joint name="hinge_z" type="hinge" axis="0 0 1" frictionloss="0.5"/>
+            
+            <!-- X-axis (red) -->
+            <geom type="cylinder" size="0.005 0.02" rgba="1 0 0 0.8" pos="0.01 0 0" euler="0 1.571 0"/>
+            <!-- Y-axis (green) -->
+            <geom type="cylinder" size="0.005 0.02" rgba="0 1 0 0.8" pos="0 0.01 0" euler="1.571 0 0"/>
+            <!-- Z-axis (blue) -->
+            <geom type="cylinder" size="0.005 0.02" rgba="0 0 1 0.8" pos="0 0 0.01" euler="0 0 0"/>
+        </body>
+
+        <!-- <camera mode="fixed" pos="-0.1 -0.1 0.5" euler="45 0 -45"/> -->
+        <camera mode="fixed" pos="-0.02 -1 1" euler="0.7854 0 -0.2"/>
+    </worldbody> 
+</mujoco> 

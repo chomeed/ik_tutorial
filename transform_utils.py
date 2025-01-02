@@ -64,10 +64,16 @@ def axisangle_from_rot(R):
     Reference: https://en.wikipedia.org/wiki/Axis–angle_representation
     '''
     trace_R = np.trace(R) 
-    angle = np.arccos((trace_R - 1)/2)
+    print("CHECK", (trace_R - 1)/2)
+    angle = np.arccos(np.clip((trace_R - 1) / 2, -1, 1))
+    
+
+    if np.isclose(angle, 0, atol=1e-6): 
+        return np.zeros(3)
+
     axis = (1 / (2*np.sin(angle))) * np.array([R[2, 1] - R[1, 2], R[0, 2] - R[2, 0], R[1, 0] - R[0, 1]]).T
 
-    return axis, angle 
+    return angle * axis # axis-angle representation (3, )
 
 def rot_from_axisangle(axis, angle): 
     '''

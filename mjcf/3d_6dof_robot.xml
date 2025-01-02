@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<mujoco> 
+    <compiler eulerseq="XYZ" angle="degree"/>
+    <option gravity="0 0 0" timestep="0.001"/>
+    
+    <default class="main"> 
+        <geom rgba="1 1 0 1"/> <!-- Yellow color -->
+        <default class="sub"> 
+            <geom rgba="0 1 0 1"/> <!-- Green color -->
+        </default>  
+    </default>
+
+    <worldbody> 
+        <body pos="0 0 0"> 
+            <geom type="capsule" density="0.01" class="main" size="0.01 0.02925" pos="0 0 0.02925"/>
+            <body name="robot" pos="0 0 0.0585">
+                <geom type="capsule" density="0.01" class="sub" size="0.01 0.0225" pos="0 0 0.0225"/>
+                <joint name="j0" type="hinge" axis="0 0 1" frictionloss="0.5"/>
+                <body pos="0 0 0.045">
+                    <geom type="capsule" density="0.01" class="main" size="0.01 0.175" pos="-0.175 0 0" euler="0 90 0"/>
+                    <joint name="j1" type="hinge" axis="0 1 0" frictionloss="0.5"/>
+                    <body pos="-0.35 0 0">
+                        <geom type="capsule" density="0.01" class="sub" size="0.01 0.11265" pos="0.109 0 0.0285" euler="0 75.35 0"/>
+                        <joint name="j2" type="hinge" axis="0 1 0" frictionloss="0.5"/>
+                        <body pos="0.218 0 0.057">
+                            <geom type="capsule" density="0.01" class="main" size="0.01 0.035" pos="0.035 0 0" euler="0 90 0"/>
+                            <joint name="j3" type="hinge" axis="0 1 0" frictionloss="0.5"/>
+                            <body pos="0.07 0 0" >
+                                <geom type="capsule" density="0.01" class="sub" size="0.01 0.0246" pos="0.0246 0 0" euler="0 90 0"/>
+                                <joint name="j4" type="hinge" axis="0 0 1" frictionloss="0.5"/>
+                                <body pos="0.0492 0 0" >
+                                    <geom type="capsule" density="0.01" class="main" size="0.01 0.0255" pos="0.0255 0 0" euler="0 90 0"/>
+                                    <joint name="j5" type="hinge" axis="1 0 0" frictionloss="0.5"/>
+                                    <body pos="0.051 0 0">
+                                        <geom type="sphere" density="0.01" class="sub" size="0.01 0.01"/>
+                                        <!-- <joint name="eef" type="hinge" axis="1 0 0" frictionloss="0.5"/> -->
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body> 
+                </body> 
+            </body> 
+        </body> 
+
+
+        <!-- For Tracking EEF  -->
+        <body name="target" pos="0.0382 0 0.1605">
+            <geom type="sphere" size="0.01" rgba="1 0 0 1" contype="0" conaffinity="0"/>
+            <joint name="slide_x" type="slide" axis="1 0 0"/>  
+            <joint name="slide_y" type="slide" axis="0 1 0"/>  
+            <joint name="slide_z" type="slide" axis="0 0 1"/>  
+
+            <joint name="hinge_x" type="hinge" axis="1 0 0" frictionloss="0.5"/>
+            <joint name="hinge_y" type="hinge" axis="0 1 0" frictionloss="0.5"/>
+            <joint name="hinge_z" type="hinge" axis="0 0 1" frictionloss="0.5"/>
+            
+            <!-- X-axis (red) -->
+            <geom type="cylinder" size="0.005 0.02" rgba="1 0 0 0.8" pos="0.01 0 0" euler="0 90 0"/>
+            <!-- Y-axis (green) -->
+            <geom type="cylinder" size="0.005 0.02" rgba="0 1 0 0.8" pos="0 0.01 0" euler="90 0 0"/>
+            <!-- Z-axis (blue) -->
+            <geom type="cylinder" size="0.005 0.02" rgba="0 0 1 0.8" pos="0 0 0.01" euler="0 0 0"/>
+        </body>
+
+        <camera mode="fixed" pos="-0.7 -0.7 1" euler="45 0 -45"/>
+        <!-- <camera mode="fixed" pos="0 -1 0" euler="90 0 0"/> -->
+
+    </worldbody>
+
+    <actuator>
+        <motor joint="j0" ctrllimited="true" ctrlrange="-1 1" />
+        <motor joint="j1" ctrllimited="true" ctrlrange="-1 1" />
+        <motor joint="j2" ctrllimited="true" ctrlrange="-1 1" />
+        <motor joint="j3" ctrllimited="true" ctrlrange="-1 1" />
+        <motor joint="j4" ctrllimited="true" ctrlrange="-1 1" />
+        <motor joint="j5" ctrllimited="true" ctrlrange="-1 1" />
+    </actuator>
+
+
+</mujoco> 

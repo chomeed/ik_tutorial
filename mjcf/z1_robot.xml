@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<mujoco>
+    <option gravity="0 0 0" timestep="0.001"/>
+
+    <include file="z1.xml"/>
+    <include file="target.xml"/>
+
+</mujoco> 
